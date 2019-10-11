@@ -55,7 +55,7 @@ void AppletFrame::draw(NVGcontext* vg, int x, int y, unsigned width, unsigned he
         nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_MIDDLE);
         nvgFontFaceId(vg, ctx->fontStash->regular);
         nvgBeginPath(vg);
-        nvgText(vg, x + style->AppletFrame.titleStart, y + style->AppletFrame.headerHeightRegular / 2 + style->AppletFrame.titleOffset, this->title.c_str(), nullptr);
+        nvgText(vg, x + style->AppletFrame.titleStart - (this->icon == nullptr ? style->AppletFrame.imageSize : 0), y + style->AppletFrame.headerHeightRegular / 2 + style->AppletFrame.titleOffset, this->title.c_str(), nullptr);
 
         // Header
         nvgBeginPath(vg);
