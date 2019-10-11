@@ -40,13 +40,18 @@ class Image : public View
   public:
     Image(std::string imagePath);
     Image(unsigned char* buffer, size_t bufferSize);
+    Image(unsigned char* buffer, unsigned width, unsigned height);
     ~Image();
 
     void draw(NVGcontext* vg, int x, int y, unsigned width, unsigned height, Style* style, FrameContext* ctx) override;
     void layout(NVGcontext* vg, Style* style, FontStash* stash) override;
 
+    /* Used for jpg, png, psd, tga, pic and gif data */
     void setImage(unsigned char* buffer, size_t bufferSize);
     void setImage(std::string imagePath);
+
+    /* Used for RGBA8 data */
+    void setImage(unsigned char* buffer, unsigned width, unsigned height);
 
     void setScaleType(ImageScaleType imageScaleType);
     void setOpacity(float opacity);
@@ -60,6 +65,7 @@ class Image : public View
     std::string imagePath;
     unsigned char* imageBuffer = nullptr;
     size_t imageBufferSize     = 0;
+    unsigned bmpWidth = 0, bmpHeight = 0;
 
     int texture = -1;
     NVGpaint imgPaint;

@@ -182,6 +182,7 @@ void ThumbnailSidebar::setThumbnail(std::string imagePath)
     else
     {
         this->image = new Image(imagePath);
+        this->image->setScaleType(ImageScaleType::CROP);
         this->image->setParent(this);
         this->invalidate();
     }
@@ -196,6 +197,22 @@ void ThumbnailSidebar::setThumbnail(unsigned char* buffer, size_t bufferSize)
     else
     {
         this->image = new Image(buffer, bufferSize);
+        this->image->setScaleType(ImageScaleType::CROP);
+        this->image->setParent(this);
+        this->invalidate();
+    }
+}
+
+void ThumbnailSidebar::setThumbnail(unsigned char* buffer, unsigned width, unsigned height)
+{
+    if (this->image)
+    {
+        this->image->setImage(buffer, width, height);
+    }
+    else
+    {
+        this->image = new Image(buffer, width, height);
+        this->image->setScaleType(ImageScaleType::CROP);
         this->image->setParent(this);
         this->invalidate();
     }
