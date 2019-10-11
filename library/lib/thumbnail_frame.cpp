@@ -22,11 +22,11 @@
 namespace brls
 {
 
-ThumbnailFrame::ThumbnailFrame()
+ThumbnailFrame::ThumbnailFrame(std::string buttonText)
     : AppletFrame(true, false)
 {
     // Create the ThumbnailSidebar
-    this->sidebar = new ThumbnailSidebar();
+    this->sidebar = new ThumbnailSidebar(buttonText);
 
     // Setup content view
     this->boxLayout = new BoxLayout(BoxLayoutOrientation::HORIZONTAL);
@@ -61,6 +61,11 @@ void ThumbnailFrame::layout(NVGcontext* vg, Style* style, FontStash* stash)
     AppletFrame::layout(vg, style, stash);
 }
 
+bool ThumbnailFrame::onCancel() {
+    Application::popView();
+    return true;
+}
+
 ThumbnailSidebar* ThumbnailFrame::getSidebar()
 {
     return this->sidebar;
@@ -73,7 +78,7 @@ ThumbnailFrame::~ThumbnailFrame()
         delete this->sidebar;
 }
 
-ThumbnailSidebar::ThumbnailSidebar()
+ThumbnailSidebar::ThumbnailSidebar(std::string buttonText)
 {
     Style* style = Application::getStyle();
 

@@ -37,7 +37,7 @@ class ThumbnailSidebar : public View
     Label* subTitle = nullptr;
 
   public:
-    ThumbnailSidebar();
+    ThumbnailSidebar(std::string buttonText);
     ~ThumbnailSidebar();
 
     void draw(NVGcontext* vg, int x, int y, unsigned width, unsigned height, Style* style, FrameContext* ctx) override;
@@ -46,6 +46,7 @@ class ThumbnailSidebar : public View
 
     void setThumbnail(std::string imagePath);
     void setThumbnail(unsigned char* buffer, size_t bufferSize);
+    void setThumbnail(unsigned char* buffer, unsigned width, unsigned height);
 
     void setTitle(std::string title);
     void setSubtitle(std::string subTitle);
@@ -64,15 +65,18 @@ class ThumbnailFrame : public AppletFrame
     View* thumbnailContentView = nullptr;
 
   public:
-    ThumbnailFrame();
+    ThumbnailFrame(std::string buttonText);
     ~ThumbnailFrame();
 
     void setContentView(View* view) override;
 
+    ThumbnailSidebar* getSidebar();
+
+    bool onCancel() override;
+
   protected:
     void layout(NVGcontext* vg, Style* style, FontStash* stash) override;
 
-    ThumbnailSidebar* getSidebar();
 };
 
 } // namespace brls
