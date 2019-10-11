@@ -63,7 +63,7 @@ void LayerView::changeLayer(int index, bool focus)
             Application::unblockInputs();
         });
 
-        this->layers[index]->invalidate();
+        this->invalidate();
     }
 
     if (index == -1)
