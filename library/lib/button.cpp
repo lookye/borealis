@@ -148,7 +148,8 @@ void Button::draw(NVGcontext* vg, int x, int y, unsigned width, unsigned height,
     switch (this->style)
     {
         case ButtonStyle::PLAIN:
-        {
+        {   
+            nvgBeginPath(vg);
             nvgFillColor(vg, a(this->state == ButtonState::DISABLED ? ctx->theme->buttonPlainDisabledBackgroundColor : ctx->theme->buttonPlainEnabledBackgroundColor));
             nvgBeginPath(vg);
             nvgRoundedRect(vg, x, y, width, height, cornerRadius);
