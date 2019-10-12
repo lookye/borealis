@@ -121,7 +121,6 @@ View* BoxLayout::updateFocus(FocusDirection direction, View* oldFocus, bool from
                     return newFocus;
                 }
             }
-            return nullptr;
         }
         // Give focus to previous focusable view
         else if ((this->orientation == BoxLayoutOrientation::HORIZONTAL && direction == FocusDirection::LEFT) || (this->orientation == BoxLayoutOrientation::VERTICAL && direction == FocusDirection::UP))
@@ -138,8 +137,6 @@ View* BoxLayout::updateFocus(FocusDirection direction, View* oldFocus, bool from
                     }
                 }
             }
-
-            return nullptr;
         }
     }
 
