@@ -326,6 +326,11 @@ AppletFrame::~AppletFrame()
     delete this->hint;
 }
 
+bool AppletFrame::onCancel()
+{
+    return this->cancelListener(this);
+}
+
 void AppletFrame::willAppear()
 {
     if (this->icon)

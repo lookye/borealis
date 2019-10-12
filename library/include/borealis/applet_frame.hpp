@@ -34,6 +34,8 @@ enum class HeaderStyle
     POPUP // Only meant for PopupFrames. Using it in other contexts might cause weird behaviour
 };
 
+typedef std::function<bool(View*)> CancelListener;
+
 // A Horizon settings-like frame, with header and footer (no sidebar)
 class AppletFrame : public View
 {
@@ -52,6 +54,8 @@ class AppletFrame : public View
     bool slideIn  = false;
 
     ViewAnimation animation;
+
+    CancelListener cancelListener;
 
   protected:
     HeaderStyle headerStyle = HeaderStyle::REGULAR;
@@ -82,6 +86,7 @@ class AppletFrame : public View
     void setIcon(unsigned char* buffer, unsigned width, unsigned height);
     virtual void setContentView(View* view);
     void setHeaderStyle(HeaderStyle headerStyle);
+    void setCancelListener(CancelListener listener);
 
     void setAnimateHint(bool animate)
     {

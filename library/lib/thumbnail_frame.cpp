@@ -61,11 +61,6 @@ void ThumbnailFrame::layout(NVGcontext* vg, Style* style, FontStash* stash)
     AppletFrame::layout(vg, style, stash);
 }
 
-bool ThumbnailFrame::onCancel() {
-    Application::popView();
-    return true;
-}
-
 ThumbnailSidebar* ThumbnailFrame::getSidebar()
 {
     return this->sidebar;

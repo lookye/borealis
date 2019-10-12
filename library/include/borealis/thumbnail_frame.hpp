@@ -72,8 +72,6 @@ class ThumbnailFrame : public AppletFrame
 
     ThumbnailSidebar* getSidebar();
 
-    bool onCancel() override;
-
   protected:
     void layout(NVGcontext* vg, Style* style, FontStash* stash) override;
 
