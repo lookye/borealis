@@ -153,6 +153,7 @@ void BoxLayout::removeView(int index, bool free)
 {
     BoxLayoutChild* toRemove = this->children[index];
     toRemove->view->willDisappear();
+    Application::removeFocus(toRemove->view);
     if (free)
         delete toRemove->view;
     delete toRemove;
@@ -344,6 +345,10 @@ void BoxLayout::addView(View* view, bool fill)
 View* BoxLayout::getChild(size_t index)
 {
     return this->children[index]->view;
+}
+
+std::vector<BoxLayoutChild*>& BoxLayout::getChildren() {
+    return this->children;
 }
 
 bool BoxLayout::isEmpty()

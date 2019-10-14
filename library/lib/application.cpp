@@ -610,6 +610,18 @@ void Application::requestFocus(View* view, FocusDirection direction)
         oldFocus->shakeHighlight(direction);
 }
 
+void Application::removeFocus(View *view)
+{
+    View* oldFocus = Application::currentFocus;
+
+    if (view && view != oldFocus)
+        return;
+
+    if (oldFocus)
+        oldFocus->onFocusLost();
+    Application::currentFocus = nullptr;
+}
+
 void Application::popView(ViewAnimation animation, std::function<void(void)> cb)
 {
     if (Application::viewStack.size() == 0)

@@ -147,6 +147,7 @@ class BoxLayout : public View
     size_t getViewsCount();
 
     View* getChild(size_t i);
+    std::vector<BoxLayoutChild*>& getChildren();
 
     void setScrollingEnabled(bool enabled);
 

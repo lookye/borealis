@@ -83,6 +83,14 @@ int LayerView::getLayerIndex()
     return this->selectedIndex;
 }
 
+View* LayerView::getLayer(unsigned index)
+{
+    if (index >= this->layers.size())
+        return nullptr;
+    
+    return this->layers[index];
+}
+
 View* LayerView::requestFocus(FocusDirection direction, View* oldFocus, bool fromUp)
 {
     if (fromUp)

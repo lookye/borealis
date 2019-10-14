@@ -81,6 +81,7 @@ class Application
         ViewAnimation animation = ViewAnimation::FADE, std::function<void(void)> cb = []() {});
 
     static void requestFocus(View* view, FocusDirection direction);
+    static void removeFocus(View *view = nullptr);
 
     static Style* getStyle();
     static void setTheme(Theme theme);
