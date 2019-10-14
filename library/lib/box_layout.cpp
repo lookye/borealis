@@ -163,6 +163,7 @@ void BoxLayout::clear(bool free)
 {
     for (size_t i = 0; i < this->children.size(); i++)
         this->removeView(i, free);
+    this->children.clear();
 }
 
 void BoxLayout::updateScroll(bool animated)
