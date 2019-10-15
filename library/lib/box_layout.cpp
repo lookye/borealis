@@ -20,6 +20,7 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <algorithm>
 
 #include <borealis/animations.hpp>
 #include <borealis/application.hpp>
@@ -363,6 +364,19 @@ bool BoxLayout::isChildFocused()
             return true;
 
     return false;
+}
+
+void BoxLayout::sort(std::function<bool(BoxLayoutChild* l, BoxLayoutChild* r)> comp)
+{
+    bool wasChildFocused = isChildFocused();
+    
+    if (wasChildFocused)
+        Application::removeFocus();
+
+    std::sort(this->children.begin(), this->children.end(), comp);
+
+    if (wasChildFocused)
+        Application::requestFocus(this, FocusDirection::NONE);
 }
 
 BoxLayout::~BoxLayout()
