@@ -55,8 +55,6 @@ class AppletFrame : public View
 
     ViewAnimation animation;
 
-    CancelListener cancelListener;
-
   protected:
     HeaderStyle headerStyle = HeaderStyle::REGULAR;
 
@@ -64,6 +62,8 @@ class AppletFrame : public View
 
     unsigned leftPadding  = 0;
     unsigned rightPadding = 0;
+
+    CancelListener cancelListener;
 
   public:
     AppletFrame(bool padLeft, bool padRight);
