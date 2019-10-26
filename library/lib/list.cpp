@@ -176,6 +176,18 @@ void ListItem::setThumbnail(unsigned char* buffer, unsigned width, unsigned heig
     this->invalidate();
 }
 
+void ListItem::setThumbnail(std::vector<unsigned char> &buffer)
+{
+    if (this->thumbnailView)
+        this->thumbnailView->setImage(buffer);
+    else
+        this->thumbnailView = new Image(buffer);
+
+    this->thumbnailView->setParent(this);
+    this->thumbnailView->setScaleType(ImageScaleType::FIT);
+    this->invalidate();
+}
+
 bool ListItem::getReduceDescriptionSpacing()
 {
     return this->reduceDescriptionSpacing;

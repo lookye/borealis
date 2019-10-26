@@ -84,6 +84,7 @@ class AppletFrame : public View
     void setIcon(std::string imagePath);
     void setIcon(View* view);
     void setIcon(unsigned char* buffer, unsigned width, unsigned height);
+    void setIcon(std::vector<unsigned char> &buffer);
     virtual void setContentView(View* view);
     void setHeaderStyle(HeaderStyle headerStyle);
     void setCancelListener(CancelListener listener);

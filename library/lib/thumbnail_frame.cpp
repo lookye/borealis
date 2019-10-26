@@ -218,6 +218,21 @@ void ThumbnailSidebar::setThumbnail(unsigned char* buffer, unsigned width, unsig
     }
 }
 
+void ThumbnailSidebar::setThumbnail(std::vector<unsigned char> &buffer)
+{
+    if (this->image)
+    {
+        this->image->setImage(buffer);
+    }
+    else
+    {
+        this->image = new Image(buffer);
+        this->image->setScaleType(ImageScaleType::CROP);
+        this->image->setParent(this);
+        this->invalidate();
+    }
+}
+
 void ThumbnailSidebar::setSubtitle(std::string subTitle)
 {
     if (!this->subTitle)

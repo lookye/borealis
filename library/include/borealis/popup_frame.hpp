@@ -34,8 +34,8 @@ class PopupFrame : public View
     PopupFrame(std::string title, std::string imagePath, AppletFrame* contentView, std::string subTitleLeft = "", std::string subTitleRight = "");
     PopupFrame(std::string title, unsigned char* imageBuffer, size_t imageBufferSize, AppletFrame* contentView, std::string subTitleLeft = "", std::string subTitleRight = "");
     PopupFrame(std::string title, unsigned char* imageBuffer, unsigned width, unsigned height, AppletFrame* contentView, std::string subTitleLeft = "", std::string subTitleRight = "");
+    PopupFrame(std::string title, std::vector<unsigned char> &buffer, AppletFrame* contentView, std::string subTitleLeft, std::string subTitleRight);
     PopupFrame(std::string title, AppletFrame* contentView, std::string subTitleLeft = "", std::string subTitleRight = "");
-
     AppletFrame* contentView = nullptr;
 
   protected:
@@ -54,6 +54,7 @@ class PopupFrame : public View
     static void open(std::string title, std::string imagePath, AppletFrame* contentView, std::string subTitleLeft = "", std::string subTitleRight = "");
     static void open(std::string title, unsigned char* imageBuffer, size_t imageBufferSize, AppletFrame* contentView, std::string subTitleLeft = "", std::string subTitleRight = "");
     static void open(std::string title, unsigned char* imageBuffer, unsigned width, unsigned height, AppletFrame* contentView, std::string subTitleLeft = "", std::string subTitleRight = "");
+    static void open(std::string title, std::vector<unsigned char> &buffer, AppletFrame* contentView, std::string subTitleLeft = "", std::string subTitleRight = "");
     static void open(std::string title, AppletFrame* contentView, std::string subTitleLeft = "", std::string subTitleRight = "");
 
     bool isTranslucent() override

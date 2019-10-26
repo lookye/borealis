@@ -90,6 +90,20 @@ PopupFrame::PopupFrame(std::string title, AppletFrame* contentView, std::string 
     this->registerAction("Back", Key::B, [this] { return this->onCancel(); });
 }
 
+PopupFrame::PopupFrame(std::string title, std::vector<unsigned char> &buffer, AppletFrame* contentView, std::string subTitleLeft, std::string subTitleRight)
+    : contentView(contentView)
+{
+    if (this->contentView)
+    {
+        this->contentView->setParent(this);
+        this->contentView->setHeaderStyle(HeaderStyle::POPUP);
+        this->contentView->setTitle(title);
+        this->contentView->setSubtitle(subTitleLeft, subTitleRight);
+        this->contentView->setIcon(buffer);
+        this->contentView->invalidate();
+    }
+}
+
 void PopupFrame::draw(NVGcontext* vg, int x, int y, unsigned width, unsigned height, Style* style, FrameContext* ctx)
 {
     // Backdrop
@@ -162,6 +176,12 @@ void PopupFrame::open(std::string title, unsigned char* imageBuffer, unsigned wi
 void PopupFrame::open(std::string title, AppletFrame* contentView, std::string subTitleLeft, std::string subTitleRight)
 {
     PopupFrame* popupFrame = new PopupFrame(title, contentView, subTitleLeft, subTitleRight);
+    Application::pushView(popupFrame);
+}
+
+void PopupFrame::open(std::string title, std::vector<unsigned char> &buffer, AppletFrame* contentView, std::string subTitleLeft, std::string subTitleRight)
+{
+    PopupFrame* popupFrame = new PopupFrame(title, buffer, contentView, subTitleLeft, subTitleRight);
     Application::pushView(popupFrame);
 }
 

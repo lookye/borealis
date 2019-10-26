@@ -294,6 +294,22 @@ void AppletFrame::setIcon(std::string imagePath)
     this->icon->invalidate();
 }
 
+void AppletFrame::setIcon(std::vector<unsigned char> &buffer)
+{
+    if (!this->icon)
+    {
+        this->icon = new Image(buffer);
+        this->icon->setScaleType(ImageScaleType::SCALE);
+        this->icon->setParent(this);
+    }
+    else
+    {
+        this->icon->setImage(buffer);
+    }
+
+    this->icon->invalidate();
+}
+
 void AppletFrame::setIcon(View* view)
 {
     if (this->icon)
