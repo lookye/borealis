@@ -172,6 +172,7 @@ class Application
     inline static float frameTime = 0.0f;
 
     inline static View* repetitionOldFocus = nullptr;
+    inline static bool hasFocusChangedThisFrame = false;
 
     inline static GenericEvent globalFocusChangeEvent;
     inline static VoidEvent globalHintsUpdateEvent;
