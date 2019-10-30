@@ -331,6 +331,9 @@ void BoxLayout::layout(NVGcontext* vg, Style* style, FontStash* stash)
 
 void BoxLayout::addView(View* view, bool fill)
 {
+    if (view == nullptr)
+        return;
+        
     BoxLayoutChild* child = new BoxLayoutChild();
     child->view           = view;
     child->fill           = fill;
