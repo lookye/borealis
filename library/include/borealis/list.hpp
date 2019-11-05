@@ -153,6 +153,7 @@ class ToggleListItem : public ListItem
     virtual bool onClick() override;
 
     bool getToggleState();
+    void setToggleState(bool state);
 };
 
 // A list item which spawns the swkbd

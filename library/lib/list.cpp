@@ -519,6 +519,12 @@ bool ToggleListItem::getToggleState()
     return this->toggleState;
 }
 
+void ToggleListItem::setToggleState(bool state)
+{
+    this->toggleState = state;
+    this->updateValue();
+}
+
 InputListItem::InputListItem(std::string label, std::string initialValue, std::string helpText, std::string description, int maxInputLength)
     : ListItem(label, description)
     , helpText(helpText)
