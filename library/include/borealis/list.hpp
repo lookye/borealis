@@ -72,7 +72,9 @@ class ListItem : public View
     void setThumbnail(Image* image);
     void setThumbnail(std::string imagePath);
     void setThumbnail(unsigned char* buffer, size_t bufferSize);
-
+    void setThumbnail(unsigned char* buffer, unsigned width, unsigned height);
+    void setThumbnail(std::vector<unsigned char> &buffer);
+    
     bool hasDescription();
     void setDrawTopSeparator(bool draw);
 
@@ -151,6 +153,7 @@ class ToggleListItem : public ListItem
     virtual bool onClick() override;
 
     bool getToggleState();
+    void setToggleState(bool state);
 };
 
 // A list item which spawns the swkbd

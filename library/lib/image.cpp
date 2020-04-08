@@ -36,6 +36,18 @@ Image::Image(unsigned char* buffer, size_t bufferSize)
     this->setOpacity(1.0F);
 }
 
+Image::Image(unsigned char* buffer, unsigned width, unsigned height)
+{
+    setImage(buffer, width, height);
+    setOpacity(1.0F);
+}
+
+Image::Image(std::vector<unsigned char> &buffer)
+{
+    setImage(buffer);
+    setOpacity(1.0F);
+}
+
 Image::~Image()
 {
     if (this->imageBuffer != nullptr)
@@ -69,8 +81,14 @@ void Image::reloadTexture()
 
     if (!this->imagePath.empty())
         this->texture = nvgCreateImage(vg, this->imagePath.c_str(), 0);
+    else if (this->bmpWidth != 0 && this->bmpHeight != 0) {
+        this->texture = nvgCreateImageRGBA(vg, this->bmpWidth, this->bmpHeight, 0, this->imageBuffer);
+        nvgUpdateImage(vg, this->texture, this->imageBuffer);
+    }
     else if (this->imageBuffer != nullptr)
         this->texture = nvgCreateImageMem(vg, 0, this->imageBuffer, this->imageBufferSize);
+    else if (this->imageVector != nullptr)
+        this->texture = nvgCreateImageMem(vg, 0, &(*this->imageVector)[0], this->imageBufferSize);
 }
 
 void Image::layout(NVGcontext* vg, Style* style, FontStash* stash)
@@ -146,9 +164,29 @@ void Image::setImage(unsigned char* buffer, size_t bufferSize)
 
     this->imagePath = "";
 
+    this->imageVector = nullptr;
     this->imageBuffer = new unsigned char[bufferSize];
     std::memcpy(this->imageBuffer, buffer, bufferSize);
     this->imageBufferSize = bufferSize;
+    this->bmpWidth = 0;
+    this->bmpHeight = 0;
+
+    this->reloadTexture();
+    this->invalidate();
+}
+
+void Image::setImage(unsigned char* buffer, unsigned width, unsigned height) {
+        if (this->imageBuffer != nullptr)
+        delete[] this->imageBuffer;
+
+    this->imagePath = "";
+    
+    this->imageVector = nullptr;
+    this->imageBuffer = new unsigned char[width * height * 4];
+    std::memcpy(this->imageBuffer, buffer, width * height * 4);
+    this->imageBufferSize = width * height * 4;
+    this->bmpWidth = width;
+    this->bmpHeight = height;
 
     this->reloadTexture();
     this->invalidate();
@@ -162,9 +200,29 @@ void Image::setImage(std::string imagePath)
         delete[] this->imageBuffer;
 
     this->imageBuffer = nullptr;
+    this->imageVector = nullptr;
+    this->bmpWidth = 0;
+    this->bmpHeight = 0;
 
     this->reloadTexture();
 
+    this->invalidate();
+}
+
+void Image::setImage(std::vector<unsigned char> &buffer)
+{
+    if (this->imageBuffer != nullptr)
+        delete[] this->imageBuffer;
+
+    this->imagePath = "";
+
+    this->imageVector = &buffer;
+    this->imageBuffer = nullptr;
+    this->imageBufferSize = buffer.size();
+    this->bmpWidth = 0;
+    this->bmpHeight = 0;
+    
+    this->reloadTexture();
     this->invalidate();
 }
 

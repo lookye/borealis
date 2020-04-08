@@ -363,6 +363,8 @@ bool Application::mainLoop()
     static retro_time_t buttonPressTime = 0;
     static int repeatingButtonTimer     = 0;
 
+    hasFocusChangedThisFrame = false;
+
     for (int i = GLFW_GAMEPAD_BUTTON_A; i <= GLFW_GAMEPAD_BUTTON_LAST; i++)
     {
         if (Application::gamepad.buttons[i] == GLFW_PRESS)
@@ -446,20 +448,28 @@ void Application::onGamepadButtonPressed(char button, bool repeating)
     switch (button)
     {
         case GLFW_GAMEPAD_BUTTON_DPAD_DOWN:
-            if (Application::currentFocus && Application::currentFocus->getParent())
+            if (Application::currentFocus && Application::currentFocus->getParent() && !hasFocusChangedThisFrame) {
                 Application::requestFocus(Application::currentFocus->getParent(), FocusDirection::DOWN);
+                hasFocusChangedThisFrame = true;
+            }
             break;
         case GLFW_GAMEPAD_BUTTON_DPAD_UP:
-            if (Application::currentFocus && Application::currentFocus->getParent())
+            if (Application::currentFocus && Application::currentFocus->getParent() && !hasFocusChangedThisFrame) {
                 Application::requestFocus(Application::currentFocus->getParent(), FocusDirection::UP);
+                hasFocusChangedThisFrame = true;
+            }
             break;
         case GLFW_GAMEPAD_BUTTON_DPAD_LEFT:
-            if (Application::currentFocus && Application::currentFocus->getParent())
+            if (Application::currentFocus && Application::currentFocus->getParent() && !hasFocusChangedThisFrame) {
                 Application::requestFocus(Application::currentFocus->getParent(), FocusDirection::LEFT);
+                hasFocusChangedThisFrame = true;
+            }
             break;
         case GLFW_GAMEPAD_BUTTON_DPAD_RIGHT:
-            if (Application::currentFocus && Application::currentFocus->getParent())
+            if (Application::currentFocus && Application::currentFocus->getParent() && !hasFocusChangedThisFrame) {
                 Application::requestFocus(Application::currentFocus->getParent(), FocusDirection::RIGHT);
+                hasFocusChangedThisFrame = true;
+            }
             break;
         default:
             break;
@@ -610,6 +620,18 @@ void Application::requestFocus(View* view, FocusDirection direction)
         oldFocus->shakeHighlight(direction);
 }
 
+void Application::removeFocus(View *view)
+{
+    View* oldFocus = Application::currentFocus;
+
+    if (view && view != oldFocus)
+        return;
+
+    if (oldFocus)
+        oldFocus->onFocusLost();
+    Application::currentFocus = nullptr;
+}
+
 void Application::popView(ViewAnimation animation, std::function<void(void)> cb)
 {
     if (Application::viewStack.size() == 0)
@@ -722,7 +744,7 @@ void Application::pushView(View* view, ViewAnimation animation)
         view->alpha = 0.0f;
 
     // Focus
-    if (Application::viewStack.size() > 0)
+    if (Application::viewStack.size() > 0 && Application::currentFocus != nullptr)
     {
         Logger::debug("Pushing %s to the focus stack", Application::currentFocus->name().c_str());
         Application::focusStack.push_back(Application::currentFocus);

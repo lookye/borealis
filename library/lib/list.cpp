@@ -164,6 +164,30 @@ void ListItem::setThumbnail(unsigned char* buffer, size_t bufferSize)
     this->invalidate();
 }
 
+void ListItem::setThumbnail(unsigned char* buffer, unsigned width, unsigned height)
+{
+    if (this->thumbnailView)
+        this->thumbnailView->setImage(buffer, width, height);
+    else
+        this->thumbnailView = new Image(buffer, width, height);
+
+    this->thumbnailView->setParent(this);
+    this->thumbnailView->setScaleType(ImageScaleType::FIT);
+    this->invalidate();
+}
+
+void ListItem::setThumbnail(std::vector<unsigned char> &buffer)
+{
+    if (this->thumbnailView)
+        this->thumbnailView->setImage(buffer);
+    else
+        this->thumbnailView = new Image(buffer);
+
+    this->thumbnailView->setParent(this);
+    this->thumbnailView->setScaleType(ImageScaleType::FIT);
+    this->invalidate();
+}
+
 bool ListItem::getReduceDescriptionSpacing()
 {
     return this->reduceDescriptionSpacing;
@@ -493,6 +517,12 @@ bool ToggleListItem::onClick()
 bool ToggleListItem::getToggleState()
 {
     return this->toggleState;
+}
+
+void ToggleListItem::setToggleState(bool state)
+{
+    this->toggleState = state;
+    this->updateValue();
 }
 
 InputListItem::InputListItem(std::string label, std::string initialValue, std::string helpText, std::string description, int maxInputLength)

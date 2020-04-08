@@ -43,6 +43,20 @@ PopupFrame::PopupFrame(std::string title, unsigned char* imageBuffer, size_t ima
     this->registerAction("Back", Key::B, [this] { return this->onCancel(); });
 }
 
+PopupFrame::PopupFrame(std::string title, unsigned char* imageBuffer, unsigned width, unsigned height, AppletFrame* contentView, std::string subTitleLeft, std::string subTitleRight)
+    : contentView(contentView)
+{
+    if (this->contentView)
+    {
+        this->contentView->setParent(this);
+        this->contentView->setHeaderStyle(HeaderStyle::POPUP);
+        this->contentView->setTitle(title);
+        this->contentView->setSubtitle(subTitleLeft, subTitleRight);
+        this->contentView->setIcon(imageBuffer, width, height);
+        this->contentView->invalidate();
+    }
+}
+
 PopupFrame::PopupFrame(std::string title, std::string imagePath, AppletFrame* contentView, std::string subTitleLeft, std::string subTitleRight)
     : contentView(contentView)
 {
@@ -74,6 +88,20 @@ PopupFrame::PopupFrame(std::string title, AppletFrame* contentView, std::string 
 
     contentView->setAnimateHint(true);
     this->registerAction("Back", Key::B, [this] { return this->onCancel(); });
+}
+
+PopupFrame::PopupFrame(std::string title, std::vector<unsigned char> &buffer, AppletFrame* contentView, std::string subTitleLeft, std::string subTitleRight)
+    : contentView(contentView)
+{
+    if (this->contentView)
+    {
+        this->contentView->setParent(this);
+        this->contentView->setHeaderStyle(HeaderStyle::POPUP);
+        this->contentView->setTitle(title);
+        this->contentView->setSubtitle(subTitleLeft, subTitleRight);
+        this->contentView->setIcon(buffer);
+        this->contentView->invalidate();
+    }
 }
 
 void PopupFrame::draw(NVGcontext* vg, int x, int y, unsigned width, unsigned height, Style* style, FrameContext* ctx)
@@ -127,21 +155,33 @@ View* PopupFrame::requestFocus(FocusDirection direction, View* oldFocus, bool fr
     return nullptr;
 }
 
-void PopupFrame::open(std::string title, unsigned char* imageBuffer, size_t imageBufferSize, AppletFrame* contentView, std::string subTitleLeft, std::string subTitleRight)
-{
-    PopupFrame* popupFrame = new PopupFrame(title, imageBuffer, imageBufferSize, contentView, subTitleLeft, subTitleRight);
-    Application::pushView(popupFrame);
-}
-
 void PopupFrame::open(std::string title, std::string imagePath, AppletFrame* contentView, std::string subTitleLeft, std::string subTitleRight)
 {
     PopupFrame* popupFrame = new PopupFrame(title, imagePath, contentView, subTitleLeft, subTitleRight);
     Application::pushView(popupFrame);
 }
 
+void PopupFrame::open(std::string title, unsigned char* imageBuffer, size_t imageBufferSize, AppletFrame* contentView, std::string subTitleLeft, std::string subTitleRight)
+{
+    PopupFrame* popupFrame = new PopupFrame(title, imageBuffer, imageBufferSize, contentView, subTitleLeft, subTitleRight);
+    Application::pushView(popupFrame);
+}
+
+void PopupFrame::open(std::string title, unsigned char* imageBuffer, unsigned width, unsigned height, AppletFrame* contentView, std::string subTitleLeft, std::string subTitleRight)
+{
+    PopupFrame* popupFrame = new PopupFrame(title, imageBuffer, width, height, contentView, subTitleLeft, subTitleRight);
+    Application::pushView(popupFrame);
+}
+
 void PopupFrame::open(std::string title, AppletFrame* contentView, std::string subTitleLeft, std::string subTitleRight)
 {
     PopupFrame* popupFrame = new PopupFrame(title, contentView, subTitleLeft, subTitleRight);
+    Application::pushView(popupFrame);
+}
+
+void PopupFrame::open(std::string title, std::vector<unsigned char> &buffer, AppletFrame* contentView, std::string subTitleLeft, std::string subTitleRight)
+{
+    PopupFrame* popupFrame = new PopupFrame(title, buffer, contentView, subTitleLeft, subTitleRight);
     Application::pushView(popupFrame);
 }
 

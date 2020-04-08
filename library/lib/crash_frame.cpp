@@ -136,6 +136,7 @@ void CrashFrame::layout(NVGcontext* vg, Style* style, FontStash* stash)
 CrashFrame::~CrashFrame()
 {
     delete this->label;
+    delete this->button;
     delete this->hint;
 }
 

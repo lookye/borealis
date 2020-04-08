@@ -20,6 +20,7 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <algorithm>
 
 #include <borealis/animations.hpp>
 #include <borealis/application.hpp>
@@ -121,7 +122,6 @@ View* BoxLayout::updateFocus(FocusDirection direction, View* oldFocus, bool from
                     return newFocus;
                 }
             }
-            return nullptr;
         }
         // Give focus to previous focusable view
         else if ((this->orientation == BoxLayoutOrientation::HORIZONTAL && direction == FocusDirection::LEFT) || (this->orientation == BoxLayoutOrientation::VERTICAL && direction == FocusDirection::UP))
@@ -138,8 +138,6 @@ View* BoxLayout::updateFocus(FocusDirection direction, View* oldFocus, bool from
                     }
                 }
             }
-
-            return nullptr;
         }
     }
 
@@ -156,6 +154,7 @@ void BoxLayout::removeView(int index, bool free)
 {
     BoxLayoutChild* toRemove = this->children[index];
     toRemove->view->willDisappear();
+    Application::removeFocus(toRemove->view);
     if (free)
         delete toRemove->view;
     delete toRemove;
@@ -166,6 +165,7 @@ void BoxLayout::clear(bool free)
 {
     for (size_t i = 0; i < this->children.size(); i++)
         this->removeView(i, free);
+    this->children.clear();
 }
 
 void BoxLayout::updateScroll(bool animated)
@@ -331,6 +331,9 @@ void BoxLayout::layout(NVGcontext* vg, Style* style, FontStash* stash)
 
 void BoxLayout::addView(View* view, bool fill)
 {
+    if (view == nullptr)
+        return;
+        
     BoxLayoutChild* child = new BoxLayoutChild();
     child->view           = view;
     child->fill           = fill;
@@ -348,6 +351,10 @@ View* BoxLayout::getChild(size_t index)
     return this->children[index]->view;
 }
 
+std::vector<BoxLayoutChild*>& BoxLayout::getChildren() {
+    return this->children;
+}
+
 bool BoxLayout::isEmpty()
 {
     return this->children.size() == 0;
@@ -360,6 +367,19 @@ bool BoxLayout::isChildFocused()
             return true;
 
     return false;
+}
+
+void BoxLayout::sort(std::function<bool(BoxLayoutChild* l, BoxLayoutChild* r)> comp)
+{
+    bool wasChildFocused = isChildFocused();
+    
+    if (wasChildFocused)
+        Application::removeFocus();
+
+    std::sort(this->children.begin(), this->children.end(), comp);
+
+    if (wasChildFocused)
+        Application::requestFocus(this, FocusDirection::NONE);
 }
 
 BoxLayout::~BoxLayout()

@@ -39,6 +39,8 @@ class BoxLayoutChild
     bool fill; // should the child fill the remaining space?
 };
 
+typedef std::function<bool(BoxLayoutChild* l, BoxLayoutChild* r)> ChildComparator;
+
 // A basic horizontal or vertical box layout :
 // - Children can currently only be stretched to full width (vertical) or height (horizontal)
 // - Only works with children with fixed width (horizontal) or height (vertical)
@@ -143,10 +145,13 @@ class BoxLayout : public View
 
     bool isChildFocused();
 
+    void sort(ChildComparator comp);
+
     void setFocusedIndex(unsigned index);
     size_t getViewsCount();
 
     View* getChild(size_t i);
+    std::vector<BoxLayoutChild*>& getChildren();
 
     void setScrollingEnabled(bool enabled);
 

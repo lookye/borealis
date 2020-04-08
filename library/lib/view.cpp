@@ -586,6 +586,8 @@ void View::overrideThemeVariant(ThemeValues* theme)
 
 View::~View()
 {
+    Application::removeFocus(this);
+
     menu_animation_ctx_tag alphaTag = (uintptr_t) & this->alpha;
     menu_animation_kill_by_tag(&alphaTag);
 

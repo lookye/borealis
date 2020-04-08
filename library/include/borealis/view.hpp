@@ -82,8 +82,8 @@ class View
   private:
     Background background = Background::NONE;
 
-    void drawBackground(NVGcontext* vg, FrameContext* ctx, Style* style);
-    void drawHighlight(NVGcontext* vg, ThemeValues* theme, float alpha, Style* style, bool background);
+    virtual void drawBackground(NVGcontext* vg, FrameContext* ctx, Style* style);
+    virtual void drawHighlight(NVGcontext* vg, ThemeValues* theme, float alpha, Style* style, bool background);
 
     float highlightAlpha = 0.0f;
 

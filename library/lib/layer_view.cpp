@@ -63,7 +63,7 @@ void LayerView::changeLayer(int index, bool focus)
             Application::unblockInputs();
         });
 
-        this->layers[index]->invalidate();
+        this->invalidate();
     }
 
     if (index == -1)
@@ -81,6 +81,14 @@ void LayerView::changeLayer(int index, bool focus)
 int LayerView::getLayerIndex()
 {
     return this->selectedIndex;
+}
+
+View* LayerView::getLayer(unsigned index)
+{
+    if (index >= this->layers.size())
+        return nullptr;
+    
+    return this->layers[index];
 }
 
 View* LayerView::requestFocus(FocusDirection direction, View* oldFocus, bool fromUp)

@@ -55,7 +55,7 @@ void AppletFrame::draw(NVGcontext* vg, int x, int y, unsigned width, unsigned he
         nvgTextAlign(vg, NVG_ALIGN_LEFT | NVG_ALIGN_MIDDLE);
         nvgFontFaceId(vg, ctx->fontStash->regular);
         nvgBeginPath(vg);
-        nvgText(vg, x + style->AppletFrame.titleStart, y + style->AppletFrame.headerHeightRegular / 2 + style->AppletFrame.titleOffset, this->title.c_str(), nullptr);
+        nvgText(vg, x + style->AppletFrame.titleStart - (this->icon == nullptr ? style->AppletFrame.imageSize : 0), y + style->AppletFrame.headerHeightRegular / 2 + style->AppletFrame.titleOffset, this->title.c_str(), nullptr);
 
         // Header
         nvgBeginPath(vg);
@@ -260,6 +260,22 @@ void AppletFrame::setIcon(unsigned char* buffer, size_t bufferSize)
     this->icon->invalidate();
 }
 
+void AppletFrame::setIcon(unsigned char* buffer, unsigned width, unsigned height)
+{
+    if (!this->icon)
+    {
+        this->icon = new Image(buffer, width, height);
+        this->icon->setScaleType(ImageScaleType::SCALE);
+        this->icon->setParent(this);
+    }
+    else
+    {
+        this->icon->setImage(buffer, width, height);
+    }
+
+    this->icon->invalidate();
+}
+
 void AppletFrame::setIcon(std::string imagePath)
 {
     if (!this->icon)
@@ -273,6 +289,22 @@ void AppletFrame::setIcon(std::string imagePath)
     else if (Image* icon = dynamic_cast<Image*>(this->icon))
     {
         icon->setImage(imagePath);
+    }
+
+    this->icon->invalidate();
+}
+
+void AppletFrame::setIcon(std::vector<unsigned char> &buffer)
+{
+    if (!this->icon)
+    {
+        this->icon = new Image(buffer);
+        this->icon->setScaleType(ImageScaleType::SCALE);
+        this->icon->setParent(this);
+    }
+    else
+    {
+        this->icon->setImage(buffer);
     }
 
     this->icon->invalidate();
@@ -308,6 +340,11 @@ AppletFrame::~AppletFrame()
         delete this->icon;
 
     delete this->hint;
+}
+
+bool AppletFrame::onCancel()
+{
+    return this->cancelListener(this);
 }
 
 void AppletFrame::willAppear()

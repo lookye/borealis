@@ -22,11 +22,11 @@
 namespace brls
 {
 
-ThumbnailFrame::ThumbnailFrame()
+ThumbnailFrame::ThumbnailFrame(std::string buttonText)
     : AppletFrame(true, false)
 {
     // Create the ThumbnailSidebar
-    this->sidebar = new ThumbnailSidebar();
+    this->sidebar = new ThumbnailSidebar(buttonText);
 
     // Setup content view
     this->boxLayout = new BoxLayout(BoxLayoutOrientation::HORIZONTAL);
@@ -73,7 +73,7 @@ ThumbnailFrame::~ThumbnailFrame()
         delete this->sidebar;
 }
 
-ThumbnailSidebar::ThumbnailSidebar()
+ThumbnailSidebar::ThumbnailSidebar(std::string buttonText)
 {
     Style* style = Application::getStyle();
 
@@ -182,6 +182,7 @@ void ThumbnailSidebar::setThumbnail(std::string imagePath)
     else
     {
         this->image = new Image(imagePath);
+        this->image->setScaleType(ImageScaleType::CROP);
         this->image->setParent(this);
         this->invalidate();
     }
@@ -196,6 +197,37 @@ void ThumbnailSidebar::setThumbnail(unsigned char* buffer, size_t bufferSize)
     else
     {
         this->image = new Image(buffer, bufferSize);
+        this->image->setScaleType(ImageScaleType::CROP);
+        this->image->setParent(this);
+        this->invalidate();
+    }
+}
+
+void ThumbnailSidebar::setThumbnail(unsigned char* buffer, unsigned width, unsigned height)
+{
+    if (this->image)
+    {
+        this->image->setImage(buffer, width, height);
+    }
+    else
+    {
+        this->image = new Image(buffer, width, height);
+        this->image->setScaleType(ImageScaleType::CROP);
+        this->image->setParent(this);
+        this->invalidate();
+    }
+}
+
+void ThumbnailSidebar::setThumbnail(std::vector<unsigned char> &buffer)
+{
+    if (this->image)
+    {
+        this->image->setImage(buffer);
+    }
+    else
+    {
+        this->image = new Image(buffer);
+        this->image->setScaleType(ImageScaleType::CROP);
         this->image->setParent(this);
         this->invalidate();
     }

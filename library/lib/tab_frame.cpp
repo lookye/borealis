@@ -48,7 +48,7 @@ bool TabFrame::onCancel()
         return true;
     }
 
-    return false;
+    return this->cancelListener(this);
 }
 
 void TabFrame::switchToView(View* view)
